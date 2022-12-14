@@ -17,7 +17,10 @@ const LoginScreen = ({ navigation }) => {
             .then(async (user) => {
                 console.log('>>>  user ', user);
                 await SetToken(user.user.uid)
+                setEMail('')
+                setPassword('')
                 console.log('>>>  user.uid ', user.user.uid);
+                navigation.navigate(screenNames.Home)
             })
             .catch(error => {
                 console.log('>>> error login ', error);
@@ -53,9 +56,6 @@ const LoginScreen = ({ navigation }) => {
         }
         else {
             loginEmailAndPassword()
-            navigation.navigate(screenNames.Home)
-            setEMail('')
-            setPassword('')
         }
     }
 
@@ -112,7 +112,7 @@ const LoginScreen = ({ navigation }) => {
                         }}
                         onPress={() => {
                             btnActionSignIn()
-                            navigation.navigate(screenNames.Home)
+                            // navigation.navigate(screenNames.Home)
                         }}
 
                     >
@@ -122,7 +122,7 @@ const LoginScreen = ({ navigation }) => {
                         style={{ width: '40%', marginTop: 40, paddingStart: 6, marginLeft: 100, }}
                         onPress={() => {
 
-                            navigation.navigate(screenNames.Login)
+                            // navigation.navigate(screenNames.Login)
                         }}
 
                     >

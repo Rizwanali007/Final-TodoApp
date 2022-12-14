@@ -4,7 +4,6 @@ import screenNames from '../helpers/screenNames'
 import { SignUpUser } from '../firebase/signUpUser';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { showToast, validateUserEmail } from '../helpers/utils'
-import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
 const SignUpScreen = ({ navigation }) => {

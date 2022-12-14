@@ -2,11 +2,13 @@ import { View, Text, StyleSheet, Modal, FlatList, TouchableOpacity, } from 'reac
 import React, { useState, useEffect } from 'react'
 import AddListModal from "../components/addListModal"
 import TodoList from "../components/todoList"
+import screenNames from '../helpers/screenNames'
+import auth from '@react-native-firebase/auth';
 import { GetToken } from '../asyncStorage/asyncStorage'
 import firestore from '@react-native-firebase/firestore';
 import AntDesign from "react-native-vector-icons/AntDesign"
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
     const [addTodoVisible, setAddTodoVisible] = useState(false)
     const [lists, setLists] = useState([])
     const [data, setData] = useState()
@@ -56,9 +58,32 @@ const HomeScreen = () => {
         setData(itemTemp)
     }
 
+    const logOut = async () => {
+        await auth()
+            .signOut()
+            .then(() => {
+                console.log('User signed out!')
+                navigation.navigate(screenNames.Login)
+            }
+            ).catch((error) => {
+                console.log("ERROR LOGOUT", error)
+            })
+
+    }
 
     return (
         <View style={styles.container}>
+            <View>
+                <TouchableOpacity
+                    style={{
+                        backgroundColor: "black", marginTop: -40,
+                        marginLeft: 35, marginRight: 35, height: 25,
+                        width: 160, borderRadius: 10
+                    }}
+                    onPress={() => logOut()}>
+                    <Text style={{ color: "white", textAlign: 'center', fontSize: 18, fontWeight: "700" }}>Logout</Text>
+                </TouchableOpacity>
+            </View>
             <Modal animationType="slide" visible={addTodoVisible}
                 onRequestClose={() => setAddTodoVisible(false)}
             >
@@ -92,6 +117,8 @@ const HomeScreen = () => {
                 </View>
             </View>
         </View>
+
+
     )
 }
 

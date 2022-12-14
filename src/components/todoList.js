@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 12,
         alignItems: "center",
         width: 200,
+        height: 175
     },
     listTitle: {
         fontSize: 24,

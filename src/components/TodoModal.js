@@ -12,12 +12,10 @@ const TodoModal = (props) => {
     const [newTodo, setNewTodo] = useState('')
     const [subTaskData, setSubTaskData] = useState()
     const [reload, setReload] = useState(0)
-    const [subTodoDelete, setSubTodoDelete] = useState()
-    const [flagSelectAll, setFlagSelectAll] = useState(false)
+    const [data, setData] = useState()
+    const [flagSelectAll, setFlagSelectAll] = useState()
 
     // console.log("props.todos.title", props.list.todos)
-
-
 
     const list = props.list
     // const taskCount = list.subTodos.length
@@ -40,6 +38,7 @@ const TodoModal = (props) => {
         // console.log("taskID", taskId)
         let itemTemp = item.filter(x => x._data.todoId == taskId)
         // console.log("itemTemp", itemTemp)
+        setFlagSelectAll(itemTemp[0]._data.select_all)
         setSubTaskData(itemTemp)
     }
     // console.log("subTaskData DAATAAAA", subTaskData)
@@ -55,19 +54,24 @@ const TodoModal = (props) => {
     }, [])
 
     async function addTodo() {
-        let list = props.list
-        const todoRef = await firestore().collection('Todo').doc(props.itemId);
-        // console.log("DATA ARHA HY YA NI ", subTaskData[0]._data)
-        todoRef.set({
-            ...subTaskData[0]._data,
-            subTodos: [
-                ...subTaskData[0]._data.subTodos,
-                {
-                    heading: newTodo,
-                    completed: false,
-                }]
-        })
-        props.updateList(list)
+        if (flagSelectAll == false) {
+            const todoRef = await firestore().collection('Todo').doc(props.itemId);
+            // console.log("DATA ARHA HY YA NI ", subTaskData[0]._data)
+            todoRef.set({
+                ...subTaskData[0]._data,
+                subTodos: [
+                    ...subTaskData[0]._data.subTodos,
+                    {
+                        heading: newTodo,
+                        completed: false,
+                    }],
+                select_all: flagSelectAll,
+            })
+        }
+        else {
+            alert("you cannot add subTodo here because this todo is completed!")
+        }
+
         setNewTodo('')
         Keyboard.dismiss()
     }
@@ -131,9 +135,11 @@ const TodoModal = (props) => {
 
         // console.log("todosTemp1", todosTemp1)
         let tempsFlag = todosTemp1.find(ele => ele.completed == false)
-        // console.log("TEMPFLAG?>>>>>>>>>>>>   ", tempsFlag)
+
+        console.log("TEMPFLAG?>>>>>>>>>>>>   ", tempsFlag)
         if (tempsFlag === undefined) {
             setFlagSelectAll(true)
+            // console.log("TEMPFLAG inside if block>>>>>>>>>>>>   ", tempsFlag)
         }
         else {
             setFlagSelectAll(false)
@@ -153,13 +159,29 @@ const TodoModal = (props) => {
     const selectAll = async () => {
         setFlagSelectAll(!flagSelectAll)
         const tempArr = subTaskData[0]._data.subTodos
-        tempArr.map(x => { x.completed = !x.completed })
+        tempArr.map(x => {
+            // x.completed = !x.completed
 
-        // console.log("SELECTALL", tempArr)
+            if (flagSelectAll == false) {
+                console.log("IF ACCESSIBLE")
+                return x.completed = true
+
+                // return x.completed
+            }
+            else {
+                console.log(" ELSE ACCESSIBLE")
+                return x.completed = false
+                // return x.completed
+            }
+        })
+
+
+        console.log("SELECTALL", tempArr)
         const todoRef = await firestore().collection('Todo').doc(props.itemId);
         todoRef.update({
             ...subTaskData[0]._data,
-            subTodos: tempArr
+            subTodos: tempArr,
+            select_all: !flagSelectAll
         })
 
     }

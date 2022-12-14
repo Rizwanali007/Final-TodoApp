@@ -4,7 +4,7 @@ import firestore from '@react-native-firebase/firestore';
 
 
 const UpdateData = (props) => {
-    console.log("PROPSSSS", props.list.heading)
+    // console.log("PROPSSSS", props.list.heading)
     const [showModal, setShowModal] = useState(false)
     const [addTask, setAddTask] = useState(props.list.heading)
 
@@ -23,7 +23,7 @@ const UpdateData = (props) => {
     }
 
     return (
-        <View style={{ height: "100%", marginTop: 40, flex: 1, alignItems: "center" }}>
+        <View style={{ marginTop: 40, flex: 1, alignItems: "center" }}>
             <TouchableOpacity
                 style={{
                     backgroundColor: "white", marginTop: -30,

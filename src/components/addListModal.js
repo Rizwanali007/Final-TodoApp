@@ -20,6 +20,7 @@ const AddListModal = (props) => {
             color: color,
             subTodos: [],
             todoId: UId,
+            select_all: false,
             Userid: userUid
         })
 

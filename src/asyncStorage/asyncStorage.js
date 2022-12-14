@@ -27,7 +27,7 @@ export const GetToken = async () => {
     try {
         var data = await AsyncStorage.getItem("@Token")
         data = JSON.parse(data)
-        console.log("Get TOKEN", data)
+        // console.log("Get TOKEN", data)
         return data
     } catch (error) {
         console.log('ERRor', error)
